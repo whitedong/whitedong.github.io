@@ -1,1 +1,3 @@
-document.getElementById('box').innerHTML = 'test';
+var note = 'Welcome';
+
+document.getElementById('box').innerHTML = note;
