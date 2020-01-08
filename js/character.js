@@ -12,6 +12,11 @@ var Character = function(){
 
     var walkIndex = 0;
     
+    var stand = function(){
+        initStatus = ['hero-model'];
+        hero.className = initStatus .join(' ');
+    };
+
     var rightMove = function (){
         initStatus = ['hero-model'];
         initStatus.push(RIGHT_WALK_QUEUE[walkIndex]);
@@ -28,7 +33,7 @@ var Character = function(){
         hero.style.left = x+'px';
         hero.className = initStatus .join(' ');
     }
-    var UpMove = function (){
+    var upMove = function (){
         initStatus = ['hero-model'];
         initStatus.push(UP_WALK_QUEUE[walkIndex]);
         walkIndex==0?walkIndex=1:walkIndex=0;
@@ -45,45 +50,35 @@ var Character = function(){
         hero.className = initStatus .join(' ');
     }
 
-    var timeMachine = setInterval(function(){
-        if(status == 'walk'){
-            hero.className = 'hero-model hero-stand_down';
-        }
-    },500);
     var eventHandler = function() {
-        var keyCodes = [];
+        var keyCodes = {
+            38:false,40:false,37:false,39:false
+        };
+        document.onkeydown = function(e) { if(!keyCodes[e.keyCode]&&typeof keyCodes[e.keyCode] =='boolean') keyCodes[e.keyCode] = true; };
+        document.onkeyup = function(e) { if(keyCodes[e.keyCode]&&typeof keyCodes[e.keyCode] =='boolean') keyCodes[e.keyCode] = false; };
         setInterval(function(){
-            document.onkeydown = function(e) {
-                var keyCode = e.keyCode;
-                console.log(keyCode)
-                // if(!keyCodes[keyCode]){
-                //     keyCodes[keyCode] = keyCode;
-                // }
-                keyCodes.push[keyCode];
-                console.log(keyCodes);
-                // if(Object.keys(keyCodes).length > 0) {
-                //     Object.keys(keyCodes).forEach(function(key){
-                //         switch (key) {
-                //             case 38:  // 向上移动
-                //                 UpMove();
-                //                 // delete keyCodes[key];
-                //                 break;
-                //             case 40: // 向下移动
-                //                 downMove();
-                //                 break;
-                //             case 37: // 向左移动
-                //                 leftMove();
-                //                 break;
-                //             case 39: // 向右移动
-                //                 rightMove();
-                //                 break;
-                //             default:
-                //                 break;
-                //         }
-                //     })
-                // }
+            console.log('keyCodes111',keyCodes);
+            for(var keyCode in keyCodes) {
+                if(keyCodes[keyCode]){
+                    switch (keyCode) {
+                        case '38':  // 向上移动
+                            upMove();
+                            break;
+                        case '40': // 向下移动
+                            downMove();
+                            break;
+                        case '37': // 向左移动
+                            leftMove();
+                            break;
+                        case '39': // 向右移动
+                            rightMove();
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
-        },500);
+        },100);
     }
     var init = function() {
         hero.style.left = x;
